@@ -22,12 +22,17 @@ echo "$(adddate) INFO: Server IP: $IP"
 echo "$(adddate) INFO: Protocol: $PROTOCOL"
 echo ########################################################
 
-cd /app/ovpn/config/ovpn_${PROTOCOL,,}
+cd ${OVPN_CONFIG_DIR}
 
 if [ -n "$SERVER" ]; then
-  set -- "$@" '--config' "${SERVER}.${PROTOCOL,,}.ovpn"
+  if [ "${PROTOCOL,,}" = "udp" ]; then
+    filename=${SERVER}${OVPN_UDP}
+  else
+    filename=${SERVER}${OVPN_TCP}
+  fi
+  set -- "$@" '--config' "$filename"
 else
-  echo "$(adddate) ERROR: No OpenVPN config found in `pwd`/${SERVER}.${PROTOCOL,,}.ovpn. Exiting."
+  echo "$(adddate) ERROR: No OpenVPN config found in `pwd`. Exiting."
   exit 1
 fi
 if [ -n "$USERNAME" -a -n "$PASSWORD" ]; then
