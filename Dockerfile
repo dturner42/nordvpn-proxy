@@ -41,7 +41,7 @@ RUN \
 	  && \
 	echo "####### Installing killswitch #######" && \
 	  iptables -F && iptables -X && \
-      iptables-restore < /tmp/killswitch/ipv4 && \
+      iptables-restore < /tmp/killswitch/ipv4
 
 CMD ["runsvdir", "/app"]
 
