@@ -1,7 +1,9 @@
 FROM alpine:3.10.1
-LABEL MAINTAINER "Jeroen Slot"
+LABEL MAINTAINER "Dan Turner"
 
-ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip" \
+ENV OVPN_START="https://downloads.nordcdn.com/configs/files/ovpn_legacy/servers/" \
+	OVPN_UDP=".udp1194.ovpn" \
+	OVPN_TCP=".tcp443.ovpn" \
     OVPN_CONFIG_DIR="/app/ovpn/config" \
     SERVER_RECOMMENDATIONS_URL="https://api.nordvpn.com/v1/servers/recommendations" \
     SERVER_STATS_URL="https://nordvpn.com/api/server/stats/" \
@@ -13,14 +15,14 @@ ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip"
     COUNTRY="" \
     LOAD=75 \
     RANDOM_TOP="" \
-    LOCAL_NETWORK="" \
+    LOCAL_NETWORK="192.168.0.1/24" \
     REFRESH_TIME="120"
 
 COPY app /app
 EXPOSE 8118
 
 RUN \
-    echo "####### Installing packages #######" && \
+	echo "####### Installing packages #######" && \
     apk --update --no-cache add \
       privoxy \
       openvpn \
@@ -36,7 +38,10 @@ RUN \
       find /app -name *.sh | xargs chmod u+x \
       && \
     echo "####### Removing cache #######" && \
-      rm -rf /var/cache/apk/*
+      rm -rf /var/cache/apk/*#
+	  && \
+	echo "####### Initialising Killswitch #######" && \
+	  iptables --list
 
 CMD ["runsvdir", "/app"]
 
