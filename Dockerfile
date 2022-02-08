@@ -41,7 +41,7 @@ RUN \
       rm -rf /var/cache/apk/*# \
 	  && \
 	echo "####### Initialising Killswitch #######" && \
-	  iptables --list
+	  echo "todo"
 
 CMD ["runsvdir", "/app"]
 
