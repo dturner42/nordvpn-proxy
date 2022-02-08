@@ -38,7 +38,8 @@ RUN \
       find /app -name *.sh | xargs chmod u+x \
       && \
     echo "####### Removing cache #######" && \
-      rm -rf /var/cache/apk/*
+      rm -rf /var/cache/apk/* \
+	  && \
 	echo "####### Installing killswitch #######" && \
 	  iptables -F && iptables -X && \
       iptables-restore < /tmp/killswitch/ipv4 && \
