@@ -1,6 +1,6 @@
 Alpine with OpenVPN and Privoxy to use your NordVPN account.
 
-Based on jeroenslot/nordvpn-proxy with added killswitch and downloading of specific config files due to rate limiting on the all config download page. Also added bugfix to prevent adding of default local network to privoxy when other local networks have been specified using environment variable.
+Based on jeroenslot/nordvpn-proxy with added killswitch. Also added bugfix to prevent adding of default local network to privoxy when other local networks have been specified using environment variable.
 
 
 # Features

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e -u -o pipefail
 
-source /app/ovpn/servers_recommendations.sh
 source /app/ovpn/get-ovpn-files.sh
+source /app/ovpn/servers_recommendations.sh
 
 . /app/date.sh --source-only
 
@@ -22,17 +22,12 @@ echo "$(adddate) INFO: Server IP: $IP"
 echo "$(adddate) INFO: Protocol: $PROTOCOL"
 echo ########################################################
 
-cd ${OVPN_CONFIG_DIR}
+cd /app/ovpn/config/ovpn_${PROTOCOL,,}
 
 if [ -n "$SERVER" ]; then
-  if [ "${PROTOCOL,,}" = "udp" ]; then
-    filename=${SERVER}${OVPN_UDP}
-  else
-    filename=${SERVER}${OVPN_TCP}
-  fi
-  set -- "$@" '--config' "$filename"
+  set -- "$@" '--config' "${SERVER}.${PROTOCOL,,}.ovpn"
 else
-  echo "$(adddate) ERROR: No OpenVPN config found in `pwd`. Exiting."
+  echo "$(adddate) ERROR: No OpenVPN config found in `pwd`/${SERVER}.${PROTOCOL,,}.ovpn. Exiting."
   exit 1
 fi
 if [ -n "$USERNAME" -a -n "$PASSWORD" ]; then
