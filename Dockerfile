@@ -39,9 +39,9 @@ RUN \
     echo "####### Removing cache #######" && \
       rm -rf /var/cache/apk/* \
 	  && \
-	echo "####### Installing killswitch #######" && \
-	  iptables -F && iptables -X && \
-      iptables-restore < /tmp/killswitch/ipv4
+	#echo "####### Installing killswitch #######" && \
+	#  iptables -F && iptables -X && \
+    #  iptables-restore < /tmp/killswitch/ipv4
 
 CMD ["runsvdir", "/app"]
 
