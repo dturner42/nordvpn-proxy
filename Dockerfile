@@ -31,7 +31,6 @@ RUN \
       ncurses \
       curl \
       unzip \
-	  ip6tables \
       && \
     echo "####### Changing permissions #######" && \
       find /app -name run | xargs chmod u+x && \
@@ -42,8 +41,7 @@ RUN \
 	  && \
 	echo "####### Installing killswitch #######" && \
 	  iptables -F && iptables -X && \
-      iptables-restore < /tmp/killswitch/ipv4 && \
-      ip6tables-restore < /tmp/killswitch/ipv6
+      iptables-restore < /tmp/killswitch/ipv4
 
 CMD ["runsvdir", "/app"]
 
