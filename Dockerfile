@@ -13,7 +13,7 @@ ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip"
     COUNTRY="" \
     LOAD=75 \
     RANDOM_TOP="" \
-    LOCAL_NETWORK="192.168.0.0/24" \
+    LOCAL_NETWORK="192.168.0.1/24" \
     REFRESH_TIME="120"
 
 COPY app /app
