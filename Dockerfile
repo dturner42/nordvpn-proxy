@@ -1,4 +1,4 @@
-FROM alpine:3.10.1
+FROM alpine:3.15.0
 LABEL MAINTAINER "Dan Turner"
 
 ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip" \
@@ -17,10 +17,16 @@ ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip"
     REFRESH_TIME="120"
 
 COPY app /app
+COPY killswitch /tmp/killswitch
 EXPOSE 8118
 
 RUN \
-    echo "####### Installing packages #######" && \
+    #echo "####### Installing killswitch #######" && \
+	#  iptables -F && iptables -X && \
+    #  iptables-restore < /tmp/killswitch/ipv4 && \
+    #  ip6tables-restore < /tmp/killswitch/ipv6 \
+	#  && \
+	echo "####### Installing packages #######" && \
     apk --update --no-cache add \
       privoxy \
       openvpn \
@@ -36,7 +42,7 @@ RUN \
       find /app -name *.sh | xargs chmod u+x \
       && \
     echo "####### Removing cache #######" && \
-      rm -rf /var/cache/apk/*
+      rm -rf /var/cache/apk/* 
 
 CMD ["runsvdir", "/app"]
 
