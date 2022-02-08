@@ -42,4 +42,4 @@ jobs:
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           push: true
           tags: |
-            dturner42/nordvpn-proxy:${{ env.VERSION }}
+            rooteth/nordvpn-proxy:${{ env.VERSION }}

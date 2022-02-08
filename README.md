@@ -46,7 +46,7 @@ docker run -d \
 -v /etc/localtime:/etc/localtime:ro \
 -v ovpn-data:/app/ovpn/config \
 -p 8118:8118 \
-dturner42/nordvpn-proxy:latest 
+rooteth/nordvpn-proxy:latest 
 ```
 
 Now you can connect other containers to use this connection:

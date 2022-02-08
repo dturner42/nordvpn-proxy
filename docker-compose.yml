@@ -1,7 +1,7 @@
 version: '3'
 services:
   vpn:
-    image: dturner42/nordvpn-proxy:latest
+    image: rooteth/nordvpn-proxy:latest
     cap_add:
       - NET_ADMIN
     devices:
