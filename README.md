@@ -39,6 +39,10 @@ docker run -d \
 --name=vpn \
 --dns=103.86.96.100 \
 --dns=103.86.99.100 \
+--sysctl net.ipv6.conf.all.disable_ipv6=1 \
+--sysctl net.ipv6.conf.default.disable_ipv6=1 \
+--sysctl net.ipv6.conf.lo.disable_ipv6=1 \
+--sysctl net.ipv6.conf.eth0.disable_ipv6=1 \
 --restart=always \
 -e "USERNAME=<nordvpn_username>" \
 -e "PASSWORD=<nordvpn_password>" \
