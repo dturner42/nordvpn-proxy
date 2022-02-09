@@ -40,7 +40,7 @@ RUN \
       rm -rf /var/cache/apk/* \
       && \
     echo "####### Installing killswitch #######" && \
-      iptables -F
+      /sbin/iptables -F
 
 CMD ["runsvdir", "/app"]
 
