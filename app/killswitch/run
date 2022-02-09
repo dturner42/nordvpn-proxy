@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "####### Installing killswitch #######"
-iptables -P INPUT DROP
-#iptables-restore < /tmp/killswitch/ipv4
-#set +e
-#ip6tables-restore < /tmp/killswitch/ipv6
-#set -e
+echo "####### (Re)Installing killswitch #######"
+echo "####### Note v6  is expected to fail #######"
+iptables-restore < /app/killswitch/ipv4
+ip6tables-restore < /app/killswitch/ipv6
+
 sleep 60
