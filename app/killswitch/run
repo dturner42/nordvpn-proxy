@@ -36,7 +36,7 @@ NETWORKS=$(echo $LOCAL_NETWORK | tr "," "\n")
 for NETWORK in $NETWORKS
 do
 	iptables -A OUTPUT -d ${NETWORK} -j ACCEPT
-	iptables -A INPUT -d ${NETWORK} -j ACCEPT
+	iptables -A INPUT -s ${NETWORK} -j ACCEPT
 done
 
 #Allow full access out via VPN
