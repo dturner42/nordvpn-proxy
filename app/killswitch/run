@@ -6,5 +6,4 @@ iptables -P INPUT DROP
 #set +e
 #ip6tables-restore < /tmp/killswitch/ipv6
 #set -e
-sv open /app/killswitch
-sleep 10
+sleep 60
