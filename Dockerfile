@@ -17,7 +17,6 @@ ENV OVPN_FILES="https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip"
     REFRESH_TIME="120"
 
 COPY app /app
-COPY killswitch /tmp/killswitch
 EXPOSE 8118
 
 RUN \
