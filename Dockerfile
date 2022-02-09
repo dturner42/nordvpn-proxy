@@ -41,8 +41,7 @@ RUN \
       rm -rf /var/cache/apk/* \
       && \
     echo "####### Installing killswitch #######" && \
-	  chmod 775 /tmp/killswitch/iprules.sh && \
-	  /tmp/killswitch/iprules.sh
+      /tmp/killswitch/iprules.sh
 
 CMD ["runsvdir", "/app"]
 
