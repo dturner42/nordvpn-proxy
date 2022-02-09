@@ -31,6 +31,7 @@ RUN \
       ncurses \
       curl \
       unzip \
+	  ip6tables \
       && \
     echo "####### Changing permissions #######" && \
       find /app -name run | xargs chmod u+x && \
@@ -39,7 +40,9 @@ RUN \
     echo "####### Removing cache #######" && \
       rm -rf /var/cache/apk/* \
       && \
-    echo "####### Installing killswitch #######"
+    echo "####### Installing killswitch #######" && \
+	  chmod 775 /tmp/killswitch/iprules.sh && \
+	  /tmp/killswitch/iprules.sh
 
 CMD ["runsvdir", "/app"]
 
