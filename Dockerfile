@@ -39,8 +39,7 @@ RUN \
     echo "####### Removing cache #######" && \
       rm -rf /var/cache/apk/* \
       && \
-    echo "####### Installing killswitch #######" && \
-      /sbin/iptables -F
+    echo "####### Installing killswitch #######"
 
 CMD ["runsvdir", "/app"]
 
