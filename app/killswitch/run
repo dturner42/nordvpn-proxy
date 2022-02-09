@@ -12,6 +12,7 @@ DNS_SERVERS=$(cat /etc/resolv.conf | cut -d ' ' -f2 -O='\n')
 for SERVER in $DNS_SERVERS
 do
 	iptables -A OUTPUT -p udp --dport 53 -d ${SERVER} -j ACCEPT
+	iptables -A OUTPUT -p tcp --dport 53 -d ${SERVER} -j ACCEPT
 done
 
 #Allow access to VPN APIs - this may add multiple 
@@ -29,10 +30,6 @@ iptables -A OUTPUT -o lo -j ACCEPT
 
 #Allow ICMP (ping) via VPN
 iptables -A OUTPUT -o tun0 -p icmp -j ACCEPT
-
-#Allow VPN traffic out - still editing, will specify TCP tighter
-iptables -A OUTPUT -p udp --dport 1194 -j ACCEPT
-#iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
 
 #Allow access to/from local network(s)
 NETWORKS=$(echo $LOCAL_NETWORK | tr "," "\n")
