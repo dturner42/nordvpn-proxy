@@ -1,4 +1,5 @@
 #!/bin/bash
+/tmp/killswitch/iprules.sh
 set -e -u -o pipefail
 
 source /app/ovpn/get-ovpn-files.sh
