@@ -40,7 +40,7 @@ RUN \
     echo "####### Removing cache #######" && \
       rm -rf /var/cache/apk/*
 
-CMD [echo "####### Installing killswitch #######" && /tmp/killswitch/iprules.sh]
+CMD ["/tmp/killswitch/iprules.sh"]
 CMD ["runsvdir", "/app"]
 
 HEALTHCHECK --interval=1m --timeout=10s \
