@@ -1,8 +1,39 @@
 #!/bin/bash
 
 echo "####### (Re)Installing killswitch #######"
-echo "####### Note v6  is expected to fail #######"
 iptables-restore < /app/killswitch/ipv4
-ip6tables-restore < /app/killswitch/ipv6
+ip6tables-restore < /app/killswitch/ipv6 2>/dev/null #note v6 is expected to fail if disabled in docker compose
 
-sleep 60
+#Allow only established/related connections in (generally)
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+#Allow loopback connections
+iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A INPUT -o lo -j ACCEPT
+
+#Allow ICMP (ping) via VPN
+iptables -A OUTPUT -o tun0 -p icmp -j ACCEPT
+
+#Allow access to/from local network(s)
+NETWORKS=$(echo $LOCAL_NETWORK | tr "," "\n")
+for NETWORK in $NETWORKS
+do
+	iptables -A OUTPUT -d ${NETWORK} -j ACCEPT
+	iptables -A INPUT -d ${NETWORK} -j ACCEPT
+done
+
+#Allow access to DNS servers
+DNS_SERVERS=$(cat /etc/resolv.conf | cut -d ' ' -f2)
+for SERVER in $DNS_SERVERS
+do
+	iptables -A OUTPUT -d ${SERVER} -j ACCEPT
+done
+
+#Allow VPN traffic out - still editing, will specify TCP tighter
+iptables -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+#Allow full access out via VPN
+iptables -A OUTPUT -o tun0 -j ACCEPT
+
+sleep 86400 #end in 24 hours, will cause to be applied again
