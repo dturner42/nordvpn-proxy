@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "####### Installing killswitch #######"
+iptables -P INPUT DROP
+#iptables-restore < /tmp/killswitch/ipv4
+#set +e
+#ip6tables-restore < /tmp/killswitch/ipv6
+#set -e
+sv open /app/killswitch
+sleep 10

@@ -1,5 +1,4 @@
 #!/bin/bash
-/tmp/killswitch/iprules.sh
 
 . /app/date.sh --source-only
 
