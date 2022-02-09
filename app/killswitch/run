@@ -7,12 +7,32 @@ ip6tables-restore < /app/killswitch/ipv6 2>/dev/null #note v6 is expected to fai
 #Allow only established/related connections in (generally)
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
+#Allow access to DNS servers
+DNS_SERVERS=$(cat /etc/resolv.conf | cut -d ' ' -f2 -O='\n')
+for SERVER in $DNS_SERVERS
+do
+	iptables -A OUTPUT -p udp --dport 53 -d ${SERVER} -j ACCEPT
+done
+
+#Allow access to VPN APIs - this may add multiple 
+VPN_API=$(nslookup -type=A downloads.nordcdn.com | awk '/^Name:/ {c=2} !--c {print $2}')
+VPN_API=$VPN_API$'\n'$(nslookup -type=A api.nordvpn.com | awk '/^Name:/ {c=2} !--c {print $2}')
+VPN_API=$VPN_API$'\n'$(nslookup -type=A nordvpn.com | awk '/^Name:/ {c=2} !--c {print $2}')
+
+for VPN_IP in $VPN_API
+do
+	iptables -A OUTPUT -p tcp --dport 443 -d  ${VPN_IP} -j ACCEPT
+done
+
 #Allow loopback connections
 iptables -A OUTPUT -o lo -j ACCEPT
-iptables -A INPUT -o lo -j ACCEPT
 
 #Allow ICMP (ping) via VPN
 iptables -A OUTPUT -o tun0 -p icmp -j ACCEPT
+
+#Allow VPN traffic out - still editing, will specify TCP tighter
+iptables -A OUTPUT -p udp --dport 1194 -j ACCEPT
+#iptables -A OUTPUT -p tcp --dport 443 -j ACCEPT
 
 #Allow access to/from local network(s)
 NETWORKS=$(echo $LOCAL_NETWORK | tr "," "\n")
@@ -22,18 +42,7 @@ do
 	iptables -A INPUT -d ${NETWORK} -j ACCEPT
 done
 
-#Allow access to DNS servers
-DNS_SERVERS=$(cat /etc/resolv.conf | cut -d ' ' -f2)
-for SERVER in $DNS_SERVERS
-do
-	iptables -A OUTPUT -d ${SERVER} -j ACCEPT
-done
-
-#Allow VPN traffic out - still editing, will specify TCP tighter
-iptables -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
-iptables -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT
-
 #Allow full access out via VPN
 iptables -A OUTPUT -o tun0 -j ACCEPT
 
-sleep 86400 #end in 24 hours, will cause to be applied again
+sleep 86400 #job end in 24 hours, will cause to be applied again
