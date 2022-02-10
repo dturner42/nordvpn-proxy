@@ -27,6 +27,7 @@ done
 
 #Allow loopback connections
 iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
 
 #Allow ICMP (ping) via VPN
 iptables -A OUTPUT -o tun0 -p icmp -j ACCEPT
