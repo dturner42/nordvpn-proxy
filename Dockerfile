@@ -42,4 +42,4 @@ RUN \
 CMD ["runsvdir", "/app"]
 
 HEALTHCHECK --interval=1m --timeout=10s \
-  CMD if [[ $( curl -x localhost:8118 https://nordvpn.com/ | sed -n -e 's/^.*Your Status: <span class="//p' | cut -d" " -f1 ) = "d-none" ]] ; then exit 1; else exit 0; fi
+  CMD if [[ $( curl -x localhost:8118 https://nordvpn.com/wp-admin/admin-ajax.php?action=get_user_info_data | jq -r '.["status"]' ) = "true" ]] ; then exit 0; else exit 1; fi
